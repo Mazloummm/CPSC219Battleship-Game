@@ -32,6 +32,7 @@ public static void initializeGame() {
             }
         }
     }
+    generateFood(); // Generation of Food
  // Initialize the snake
 int snakeLength = 3;
 snake = new int[Max_Snake_Length][2]; // Space for snake
@@ -60,8 +61,8 @@ public static void generateFood() {
         int foodPosX = rand.nextInt(19) + 1; // X-coordinate (1-19)
         int foodPosY = rand.nextInt(9) + 1; // Y-coordinate (1-9)
 
-        if (grid[foodPosX][foodPosY] == EMPTY_CHAR) { // Check if the position is empty
-            grid[foodPosX][foodPosY] = FOOD_CHAR; // Add food to grid
+        if (grid[foodPosY][foodPosX] == EMPTY_CHAR) { // Check if the position is empty
+            grid[foodPosY][foodPosX] = FOOD_CHAR; // Add food to grid
         } else {
             generateFood(); // New coordinates if position in snake
         }
