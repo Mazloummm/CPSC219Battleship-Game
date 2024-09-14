@@ -22,6 +22,7 @@ public static int snake[][]; // Body of snake
 public static void initializeGame() {
     grid = new char[GRID_SIZE_Y][GRID_SIZE_X];
     Random random = new Random();
+    
     // Loop for creating walls, borders, and empty space.
     for (int y = 0; y < GRID_SIZE_Y; y++) {
         for (int x = 0; x < GRID_SIZE_X; x++) {
@@ -32,27 +33,30 @@ public static void initializeGame() {
             }
         }
     }
+
     generateFood(); // Generation of Food
- // Initialize the snake
-int snakeLength = 3;
-snake = new int[MAX_SNAKE_LENGTH][2]; // Space for snake
-int startX = 0, startY = 0;
 
-// Generate a valid random coordinate start
-do {
-    // Randomized position of snake within valid grid boundaries (not walls)
-    startX = random.nextInt(GRID_SIZE_X - 2) + 1; // Random value between 1 and GRID_SIZE_X-2
-    startY = random.nextInt(GRID_SIZE_Y - 2) + 1; // Random value between 1 and GRID_SIZE_Y-2
-} while (grid[startY][startX] != EMPTY_CHAR); // Loop runs until an empty space is found
+    // Initialize the snake
+    int snakeLength = 3;
+    snake = new int[MAX_SNAKE_LENGTH][2]; // Space for snake
+    int startX = 0, startY = 0;
+
+    // Generate a valid random coordinate start
+    do {
+        // Randomized position of snake within valid grid boundaries (not walls)
+        startX = random.nextInt(GRID_SIZE_X - 2) + 1; // Random value between 1 and GRID_SIZE_X-2
+        startY = random.nextInt(GRID_SIZE_Y - 2) + 1; // Random value between 1 and GRID_SIZE_Y-2
+    } while (grid[startY][startX] != EMPTY_CHAR); // Loop runs until an empty space is found
 
 
-// Place the snake on the grid
-for (int i = 0; i < snakeLength; i++) {
-    snake[i][0] = startY + i;  // Y-coordinate of the snake segment
-    snake[i][1] = startX;      // X-coordinate of the snake segment
-    if (i==0) {
-        grid[snake[i][0]][snake[i][1]] = SNAKE_CHAR; // Add the snake head
+    // Place the snake on the grid
+    for (int i = 0; i < snakeLength; i++) {
+        snake[i][0] = startY + i;  // Y-coordinate of the snake segment
+        snake[i][1] = startX;      // X-coordinate of the snake segment
+        if (i==0) {
+            grid[snake[i][0]][snake[i][1]] = SNAKE_CHAR; // Add the snake head
 
+        }
     }
 }
 
@@ -66,7 +70,7 @@ public static void generateFood() {
         } else {
             generateFood(); // New coordinates if position in snake
         }
-    }
+}
 
 public static void displayGrid() {
     for (int y = 0; y < GRID_SIZE_Y; y++) {
@@ -75,7 +79,7 @@ public static void displayGrid() {
       }
       System.out.println(); // Newline after each row
     }
-  }
+}
 
   public static void main(String[] args) {
     initializeGame();
