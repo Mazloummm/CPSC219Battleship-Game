@@ -37,13 +37,19 @@ public class SnakeGame {
             }
         }
 
-        // Loop for creating portals
+        // Loop for creating portals on the walls
         for (int y = 1; y < GRID_SIZE_Y; y++) {
-            for (int x = 0; x < GRID_SIZE_X; x++) {
-                // Create portals in-between walls
-                if ((y % 2) == 0 && (x == 0 || x == GRID_SIZE_X - 1)) {
-                    grid[y][x] = PORTAL_CHAR; // Create portals
-                }
+            if (y % 2 == 0) {
+                grid[y][0] = PORTAL_CHAR; // Create portals on the left wall
+                grid[y][GRID_SIZE_X - 1] = PORTAL_CHAR; // Create portals on the right wall
+            }
+        }
+
+        // Loop for creating portals on the top and bottom walls
+        for (int x = 0; x < GRID_SIZE_X - 1; x++) {
+            if (x % 2 != 0) {
+                grid[0][x] = PORTAL_CHAR; // Create portals on the top wall
+                grid[GRID_SIZE_Y - 1][x] = PORTAL_CHAR; // Create portals on the bottom wall
             }
         }
 
@@ -100,7 +106,7 @@ public class SnakeGame {
     }
 
     // Update the snake's position and check for collisions
-    public static void moveSnake(char direction) {
+    public static void updateSnakePosition(char direction) {
         // Calculate new head position
         int newHeadX = snake[0][1];
         int newHeadY = snake[0][0];
@@ -144,11 +150,20 @@ public class SnakeGame {
             snake[i][1] = snake[i - 1][1];
         }
 
-        // Check if the snake has reached the portal and move to the other side
-        if (grid[newHeadY][newHeadX] == PORTAL_CHAR && newHeadX == GRID_SIZE_X - 1) {
-            newHeadX = GRID_SIZE_X - newHeadX;
-        } else if (grid[newHeadY][newHeadX] == PORTAL_CHAR && newHeadX == 0) {
-            newHeadX = GRID_SIZE_X - 2;
+        // Check if the snake has reached the portal on the walls and move to the other side
+        if (grid[newHeadY][newHeadX] == PORTAL_CHAR) {
+            // Check if the portal is on the top or bottom wall
+            if (newHeadY == GRID_SIZE_Y - 1) {
+                newHeadY = GRID_SIZE_Y - newHeadY; // Move to the top wall
+            } else if (newHeadY == 0) {
+                newHeadY = GRID_SIZE_Y - 2; // Move to the bottom wall
+        
+            // Check if the portal is on the left or right wall
+            } else if (newHeadX == GRID_SIZE_X - 1) {
+                newHeadX = GRID_SIZE_X - newHeadX; // Move to the left wall
+            } else if (newHeadX == 0) {
+                newHeadX = GRID_SIZE_X - 2; // Move to the right wall
+            }
         }
 
         // Update the snake's head position
@@ -217,7 +232,8 @@ public class SnakeGame {
             }
 
             // Move the snake in the given direction
-            moveSnake(direction);
+            updateSnakePosition(direction);
+
             // Display the updated grid if the game is not over
             if (!isGameOver && !quitKeyPressed) {
                 displayGrid();
