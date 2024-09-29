@@ -1,3 +1,5 @@
+Amr Ibrahim UCID #30219524
+Ethan Stirling UCID #30229189
 import java.util.Random;
 import java.util.Scanner;
 
