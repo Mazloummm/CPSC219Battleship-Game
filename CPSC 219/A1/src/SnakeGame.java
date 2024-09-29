@@ -1,3 +1,5 @@
+// Amr Ibrahim UCID #30219524
+// Ethan Stirling UCID #30229189
 import java.util.Random;
 import java.util.Scanner;
 
@@ -98,8 +100,14 @@ public class SnakeGame {
         for (int i = 0; i < numObstacles; i++) {
             int x, y;
             do {
-                x = rand.nextInt(GRID_SIZE_X - 3) + 3; // X-coordinate (3-17)
-                y = rand.nextInt(GRID_SIZE_Y - 1) + 1; // Y-coordinate (1-9)
+                x = rand.nextInt(GRID_SIZE_X - 2); // X-coordinate (2-18)
+                y = rand.nextInt(GRID_SIZE_Y - 2); // Y-coordinate (2-8)
+                if (x <= 1){ // If the obstacle is placed on the top wall
+                    x += 2;
+                }
+                if (y <= 1){ // If the obstacle is placed on the left wall
+                    y += 2;
+                } // Ensure obstacle is not placed beside a portal
             } while (grid[y][x] != EMPTY_CHAR); // Ensure obstacle is not placed on the snake or food
             grid[y][x] = OBSTACLE_CHAR; // Place obstacle on the grid
         }
