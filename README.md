@@ -1,3 +1,6 @@
+# Amr Ibrahim UCID #30219524
+# Ethan Stirling UCID #30229189
+
 A simple console-based implementation of the classic Battleship game. Players take turns guessing the location of their opponent's ships, with the goal of sinking all the ships before their own are sunk.
 
 ## Features
