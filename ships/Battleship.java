@@ -1,8 +1,8 @@
 package ships;
 
-public class PatrolBoat extends Ship {
-    public PatrolBoat(String name, int startX, int startY, boolean horizontal) {
-        super(name, startX, startY, 2, horizontal);  // Assuming size 2 for PatrolBoat
+public class Battleship extends Ship {
+    public Battleship(String name, int startX, int startY, boolean horizontal) {
+        super(name, startX, startY, 4, horizontal);  // Assuming size 4 for Battleship
     }
 
     @Override
@@ -16,3 +16,4 @@ public class PatrolBoat extends Ship {
         return false;
     }
 }
+
