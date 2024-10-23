@@ -1,56 +1,52 @@
 package ships;
 
 public abstract class Ship {
-    private String name;
-    private int startX;
-    private int startY;
-    private int size;
-    private boolean horizontal;
+    protected int startX;
+    protected int startY;
+    protected boolean horizontal;
+    protected int size;
+    protected char identifier;
 
-    public Ship(String name, int startX, int startY, int size, boolean horizontal) {
-        this.name = name;
+    public Ship(int startX, int startY, boolean horizontal, int size, char identifier) {
         this.startX = startX;
         this.startY = startY;
-        this.size = size;
         this.horizontal = horizontal;
-    }
-
-    // Getters
-    public String getName() {
-        return name;
+        this.size = size;
+        this.identifier = identifier;
     }
 
     public int getStartX() {
         return startX;
     }
 
-    public int getStartY() {
-        return startY;
-    }
-
-    public int getSize() {
-        return size;
-    }
-
-    public boolean isHorizontal() {
-        return horizontal;
-    }
-
-    // Setters
     public void setStartX(int startX) {
         this.startX = startX;
+    }
+
+    public int getStartY() {
+        return startY;
     }
 
     public void setStartY(int startY) {
         this.startY = startY;
     }
 
+    public boolean isHorizontal() {
+        return horizontal;
+    }
+
     public void setHorizontal(boolean horizontal) {
         this.horizontal = horizontal;
     }
 
-    // Define other methods as required
-    public abstract void hit(int x, int y);
+    public int getSize() {
+        return size;
+    }
 
-    public abstract boolean isSunk();
+    public char getIdentifier() {
+        return identifier;
+    }
+    
+    // Abstract method to get the ship name
+    public abstract String getName();
 }

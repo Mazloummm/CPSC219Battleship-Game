@@ -1,50 +1,41 @@
 import java.util.Scanner;
 import ships.Ship;
-import ships.Battleship; // Add this line
-import ships.PatrolBoat; // Add this line
-
+import ships.Battleship;
+import ships.PatrolBoat;
+import ships.Submarine;
+import ships.Carrier;
 
 public class HumanPlayer extends Player {
 
     private Scanner scanner = new Scanner(System.in);
+    private char[][] trackingBoard; // Board for tracking hits and misses
 
-    /**
-     * Constructs a new HumanPlayer object with the given name and board.
-     *
-     * @param name The name of the human player.
-     * @param board The game board for the human player.
-     */
     public HumanPlayer(String name, Board board) {
         super(name, board);
+        this.trackingBoard = new char[board.getSize()][board.getSize()];
+        initializeTrackingBoard();
     }
 
-    /**
-     * Places the human player's ships on the board.
-     */
     @Override
     public void placeShips() {
         System.out.println(name + ", it's time to place your ships!");
+        displayGameBoard();
 
-        // Example of ship types, you can expand this as needed
         Ship[] shipsToPlace = {
-            new Battleship("Battleship 1", 0, 0, true),
-            new PatrolBoat("PatrolBoat 1", 0, 0, true)
+            new Battleship(0, 0, true),
+            new PatrolBoat(0, 0, true),
+            new Submarine(0, 0, true),
+            new Carrier(0, 0, true)
         };
 
         for (Ship ship : shipsToPlace) {
             boolean placed = false;
             while (!placed) {
                 System.out.println("Place " + ship.getName() + " (length " + ship.getSize() + "): ");
-                System.out.print("Enter starting x-coordinate (0 to " + (board.getSize() - 1) + "): ");
-                int startX = scanner.nextInt();
+                int startX = getCoordinate("Enter starting x-coordinate (0 to " + (board.getSize() - 1) + "): ");
+                int startY = getCoordinate("Enter starting y-coordinate (0 to " + (board.getSize() - 1) + "): ");
+                boolean horizontal = getHorizontalPlacement();
 
-                System.out.print("Enter starting y-coordinate (0 to " + (board.getSize() - 1) + "): ");
-                int startY = scanner.nextInt();
-
-                System.out.print("Place horizontally? (true/false): ");
-                boolean horizontal = scanner.nextBoolean();
-
-                // Update ship's position and try to place it
                 ship.setStartX(startX);
                 ship.setStartY(startY);
                 ship.setHorizontal(horizontal);
@@ -52,6 +43,7 @@ public class HumanPlayer extends Player {
                 if (board.placeShip(ship)) {
                     placed = true;
                     System.out.println(ship.getName() + " placed successfully!");
+                    displayGameBoard(); // Show updated game board after placing a ship
                 } else {
                     System.out.println("Cannot place ship here. Please try again.");
                 }
@@ -59,19 +51,75 @@ public class HumanPlayer extends Player {
         }
     }
 
-    /**
-     * Makes a guess based on user input.
-     *
-     * @return An array containing the x and y coordinates of the guess.
-     */
+    private void displayGameBoard() {
+        System.out.println("Game Board:");
+        char[][] gameBoard = board.getBoard(); // Assuming your Board class has a method to get the game board
+
+        for (int i = 0; i < gameBoard.length; i++) {
+            for (int j = 0; j < gameBoard[i].length; j++) {
+                System.out.print("[" + gameBoard[i][j] + "]");
+            }
+            System.out.println();
+        }
+    }
+
+    private void initializeTrackingBoard() {
+        for (int i = 0; i < trackingBoard.length; i++) {
+            for (int j = 0; j < trackingBoard[i].length; j++) {
+                trackingBoard[i][j] = ' '; // Initialize with empty spaces
+            }
+        }
+    }
+
+    public void recordHit(int x, int y) {
+        trackingBoard[x][y] = 'X'; // Mark a hit
+    }
+
+    public void recordMiss(int x, int y) {
+        trackingBoard[x][y] = 'O'; // Mark a miss
+    }
+
+    public void displayTrackingBoard() {
+        System.out.println("Tracking Board:");
+        for (int i = 0; i < trackingBoard.length; i++) {
+            for (int j = 0; j < trackingBoard[i].length; j++) {
+                System.out.print("[" + trackingBoard[i][j] + "]");
+            }
+            System.out.println();
+        }
+    }
+
+    private int getCoordinate(String prompt) {
+        int coordinate;
+        while (true) {
+            System.out.print(prompt);
+            coordinate = scanner.nextInt();
+            if (coordinate >= 0 && coordinate < board.getSize()) {
+                return coordinate;
+            } else {
+                System.out.println("Invalid coordinate. Please enter a value between 0 and " + (board.getSize() - 1) + ".");
+            }
+        }
+    }
+
+    private boolean getHorizontalPlacement() {
+        while (true) {
+            System.out.print("Place horizontally? (true/false): ");
+            String input = scanner.next();
+            if (input.equalsIgnoreCase("true")) {
+                return true;
+            } else if (input.equalsIgnoreCase("false")) {
+                return false;
+            } else {
+                System.out.println("Invalid input. Please enter 'true' or 'false'.");
+            }
+        }
+    }
+
     @Override
     public int[] makeGuess() {
-        System.out.print("Enter x-coordinate for your guess (0 to " + (board.getSize() - 1) + "): ");
-        int guessX = scanner.nextInt();
-
-        System.out.print("Enter y-coordinate for your guess (0 to " + (board.getSize() - 1) + "): ");
-        int guessY = scanner.nextInt();
-
+        int guessX = getCoordinate("Enter x-coordinate for your guess (0 to " + (board.getSize() - 1) + "): ");
+        int guessY = getCoordinate("Enter y-coordinate for your guess (0 to " + (board.getSize() - 1) + "): ");
         return new int[]{guessX, guessY};
     }
 }

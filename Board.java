@@ -1,147 +1,143 @@
-import java.util.List;
-import java.util.Map;
-import java.util.HashMap;
-import java.util.ArrayList;
-
 import ships.Ship;
 
-/**
- * Represents a game board for placing and tracking ships.
- */
 public class Board {
-    private Map<Coordinate, Ship> grid;
-    private List<Ship> ships;
-    private static final int size = 10;  // The size of the board (10x10)
+    private char[][] grid;
+    private final int size;
 
-    /**
-     * Constructs a new Board object with an empty grid and no ships.
-     */
-    public Board() {
-        grid = new HashMap<>();  // Initializes an empty map to represent the grid
-        ships = new ArrayList<>();  // Initializes an empty list of ships
-    }
+    public Board(int size) {
+        this.size = size;
+        grid = new char[size][size];
 
-    /**
-     * Places a ship on the board if it can be placed without overlapping with other ships.
-     *
-     * @param ship The ship to be placed on the board.
-     * @return true if the ship was successfully placed, false otherwise.
-     */
-    public boolean placeShip(Ship ship) {
-        int x = ship.getStartX();
-        int y = ship.getStartY();
-        int length = ship.getSize();
-        boolean horizontal = ship.isHorizontal();
-
-        // Check if the ship can be placed without overlapping
-        if (!canPlaceShip(x, y, length, horizontal)) {
-            return false;
-        }
-
-        // Place the ship on the grid
-        for (int i = 0; i < length; i++) {
-            Coordinate coord = horizontal ? new Coordinate(x + i, y) : new Coordinate(x, y + i);
-            grid.put(coord, ship);  // Map the coordinate to the ship
-        }
-        
-        ships.add(ship);  // Add the ship to the list of ships on the board
-        return true;
-    }
-
-    /**
-     * Checks if a ship can be placed on the board without overlapping with other ships.
-     *
-     * @param x The x-coordinate of the ship's starting position.
-     * @param y The y-coordinate of the ship's starting position.
-     * @param length The length of the ship.
-     * @param horizontal Whether the ship is placed horizontally or vertically.
-     * @return true if the ship can be placed without overlapping, false otherwise.
-     */
-    private boolean canPlaceShip(int x, int y, int length, boolean horizontal) {
-        // Check if the ship goes out of bounds
-        if (horizontal && (x + length > size)) {
-            return false;
-        }
-        if (!horizontal && (y + length > size)) {
-            return false;
-        }
-
-        // Check for overlap with other ships
-        for (int i = 0; i < length; i++) {
-            Coordinate coord = horizontal ? new Coordinate(x + i, y) : new Coordinate(x, y + i);
-            if (grid.containsKey(coord)) {
-                return false;  // Overlaps with another ship
+        // Initialize the grid with empty cells
+        for (int i = 0; i < size; i++) {
+            for (int j = 0; j < size; j++) {
+                grid[i][j] = ' ';
             }
         }
-
-        return true;
     }
 
-    /**
-     * Displays the current state of the board, showing the positions of ships.
-     */
-    public void displayBoard() {
-        System.out.println("  0 1 2 3 4 5 6 7 8 9");
-        for (int y = 0; y < size; y++) {
-            System.out.print(y + " ");
-            for (int x = 0; x < size; x++) {
-                Coordinate coord = new Coordinate(x, y);
-                if (grid.containsKey(coord)) {
-                    System.out.print("S ");  // Display ships (you can change the symbol)
+    public int getSize() {
+        return size;
+    }
+
+    public boolean placeShip(Ship ship) {
+        int startX = ship.getStartX();
+        int startY = ship.getStartY();
+        int length = ship.getSize();
+        
+        // Check if the ship can be placed
+        if (isPlacementValid(startX, startY, length, ship.isHorizontal())) {
+            for (int i = 0; i < length; i++) {
+                if (ship.isHorizontal()) {
+                    grid[startY][startX + i] = ship.getIdentifier();
                 } else {
-                    System.out.print(". ");  // Empty water
+                    grid[startY + i][startX] = ship.getIdentifier();
                 }
+            }
+            return true; // Ship placed successfully
+        }
+        return false; // Ship cannot be placed
+    }
+
+    private boolean isPlacementValid(int startX, int startY, int length, boolean horizontal) {
+        if (horizontal) {
+            if (startX + length > size) return false; // Out of bounds horizontally
+            for (int i = 0; i < length; i++) {
+                if (grid[startY][startX + i] != ' ') return false; // Cell already occupied
+            }
+        } else {
+            if (startY + length > size) return false; // Out of bounds vertically
+            for (int i = 0; i < length; i++) {
+                if (grid[startY + i][startX] != ' ') return false; // Cell already occupied
+            }
+        }
+        return true; // Valid placement
+    }
+
+    public void displayBoard() {
+        for (int i = 0; i < size; i++) {
+            System.out.print("[");
+            for (int j = 0; j < size; j++) {
+                // Display hit, miss, or empty cell
+                char cell = grid[i][j];
+                if (cell == 'X') {
+                    System.out.print('X'); // Hit
+                } else if (cell == 'O') {
+                    System.out.print('O'); // Miss
+                } else {
+                    System.out.print(cell); // Empty or ship part
+                }
+                System.out.print("]");
             }
             System.out.println();
         }
     }
 
-    /**
-     * Receives a guess from the player and checks if it hits a ship.
-     * If a ship is hit, it updates the ship's status and prints a message if the ship is sunk.
-     *
-     * @param x The x-coordinate of the guess.
-     * @param y The y-coordinate of the guess.
-     * @return true if the guess hits a ship, false otherwise.
-     */
-    // Board.java - In the receiveGuess method, update the hit call
-public boolean receiveGuess(int x, int y) {
-    Coordinate coord = new Coordinate(x, y);
-    if (grid.containsKey(coord)) {
-        Ship ship = grid.get(coord);
-
-        // Call hit with x and y coordinates
-        ship.hit(x, y);  // Adjusted to pass x and y
-
-        System.out.println("Hit!");
-        if (ship.isSunk()) {
-            System.out.println("You sank a ship!");
-        }
-        return true;
-    } else {
-        System.out.println("Miss!");
-        return false;
-    }
-}
-
-    
-    
-    /**
- * Gets the size of the board.
- *
- * @return The size of the board.
- */
-public int getSize() {
-    return size; // Assuming 'size' is a static variable representing the board dimensions
-}
-public boolean allShipsSunk() {
-    for (Ship ship : ships) {
-        if (!ship.isSunk()) {
-            return false;  // If at least one ship is not sunk, return false
+    public void markHit(int x, int y) {
+        if (grid[y][x] != ' ' && grid[y][x] != 'X' && grid[y][x] != 'O') {
+            grid[y][x] = 'X'; // Mark as hit
+        } else {
+            grid[y][x] = 'O'; // Mark as miss
         }
     }
-    return true;  // All ships are sunk
-}
 
+    public boolean receiveGuess(int x, int y) {
+        boolean hit = grid[y][x] != ' '; // Check if there is a ship here
+        markHit(x, y);
+        return hit; // Return true if it was a hit
+    }
 
+    public boolean allShipsSunk() {
+        for (int i = 0; i < size; i++) {
+            for (int j = 0; j < size; j++) {
+                if (grid[i][j] != ' ' && grid[i][j] != 'O') {
+                    return false; // Found a part of a ship
+                }
+            }
+        }
+        return true; // All ships are sunk
+    }
+
+    public void displayInitialBoard() {
+        System.out.println("The game board is a " + size + "x" + size + " grid, each cell represented by square brackets []. The grid is used to place ships and make guesses. Each cell can either be empty, contain part of a ship, or be marked as a hit or miss.");
+        System.out.println("This is what the empty game board looks like before ships have been placed:");
+        displayBoard();
+        
+        System.out.println("IDENTIFIERS FOR SHIPS:");
+        System.out.println("Ships: Ships are represented by their identifiers in the cells they occupy.");
+        System.out.println("• Battleship (B)");
+        System.out.println("• Carrier (C)");
+        System.out.println("• Submarine (S)");
+        System.out.println("• Patrol Boat (P)");
+    }
+    
+    public void displaySampleBoard() {
+        // Example of a filled board for display
+        char[][] sampleBoard = {
+            {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
+            {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
+            {' ', 'S', 'S', 'S', ' ', ' ', ' ', ' ', ' ', ' '},
+            {' ', ' ', 'B', 'B', 'B', 'B', ' ', ' ', ' ', ' '},
+            {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
+            {' ', ' ', ' ', ' ', 'P', ' ', ' ', ' ', ' ', ' '},
+            {' ', ' ', ' ', ' ', 'P', 'C', 'C', 'C', 'C', 'C'},
+            {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
+            {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
+            {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '}
+        };
+        
+        System.out.println("Here is a sample board that the human player will see when placing their own ships:");
+        for (char[] row : sampleBoard) {
+            System.out.print("[");
+            for (char cell : row) {
+                System.out.print(cell);
+                System.out.print("]");
+            }
+            System.out.println();
+        }
+    }
+    public char[][] getBoard() {
+        return grid; // Return the current state of the board
+    }
+    
 }
