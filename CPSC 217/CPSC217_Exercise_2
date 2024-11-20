@@ -1,0 +1,14 @@
+# Get the number of people at the party
+num_people = int(input("How many people will there be? "))
+
+# Get the number of slices each person is expected to eat
+slices_per_person = int(input("How many slices will each person eat? "))
+
+# Define the number of slices per pizza
+slices_per_pizza = 8
+
+# Calculate the number of pizzas needed
+num_pizzas = (num_people * slices_per_person + slices_per_pizza - 1) // slices_per_pizza
+
+# Output the result
+print(f"You should order {num_pizzas} {'pizza' if num_pizzas == 1 else 'pizzas'}.")

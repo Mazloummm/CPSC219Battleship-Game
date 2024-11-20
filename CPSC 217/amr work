@@ -1,0 +1,55 @@
+from SimpleGraphics import *
+
+X_Boat = int(input(f"Please enter X coordinate for your boat: "))
+Y_Boat = int(input(f"Please enter Y coordinate for your boat: "))
+
+X_Sun = int(input(f"Please enter X coordinate for your sun: "))
+Y_Sun = int(input(f"Please enter Y coordinate for your sun: "))
+
+# Draw ocean
+sg.setFill("Blue")
+sg.rect(0,350, 799, 250)
+
+# Draw sky
+sg.setFill("Light Blue")
+sg.rect(0,0,799,350)
+
+# Draw land
+sg.setFill("Gold")
+sg.blob(700, 350, 125, 300, 600, 500, 550, 350)
+
+# Draw tree
+sg.setFill("Chocolate4")
+sg.rect(500, 100, 15, 250)
+
+# Draw bush
+sg.setFill("Green")
+sg.ellipse(430, 70, 150, 100)
+
+# Draw fruit
+sg.setFill("Red")
+sg.pieSlice(500, 150, 70, 25, 250, 20)
+sg.pieSlice(450, 150, 70, 25, 250, 20)
+sg.pieSlice(465, 150, 70, 25, 250, 20)
+sg.pieSlice(485, 150, 70, 25, 250, 20)
+
+
+# Ask user for input for Boat and Sun
+
+# Drawing Sun
+sg.setColor("khaki1")
+sg.ellipse(X_Sun-75, Y_Sun-75, 150, 150 )
+
+
+# Drawing hull
+sg.setColor("Bisque4")
+
+sg.pieSlice(X_Boat - 135, Y_Boat - 75, 270, 150, 180, 180)
+
+# Drawing mast
+sg.setColor("Brown")
+sg.rect(X_Boat-35, Y_Boat -150, 15, 170 )
+
+# Drawing sails
+sg.setColor("White")
+sg.rect(X_Boat-75, Y_Boat -170, 125, 75)

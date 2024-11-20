@@ -1,0 +1,6 @@
+s = "ball"
+
+if s in "ball":
+    print("Yes")
+else:
+    print("No")

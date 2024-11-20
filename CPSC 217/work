@@ -1,0 +1,46 @@
+from SimpleGraphics import *
+
+def validate_color(color):
+    valid_colors = ['black', 'white', 'blue', 'green']
+    while color not in valid_colors:
+        color = input("Invalid color. Please enter a valid color (black, white, blue, green): ")
+    return color
+
+def validate_coordinates(coordinate):
+    while not 0 <= coordinate <= 800:
+        coordinate = int(input("Invalid coordinate. Please enter a valid coordinate (0-800): "))
+    return coordinate
+
+def main():
+    background_color = validate_color(input("Enter the background color: "))
+    foreground_color = validate_color(input("Enter the foreground color: "))
+    while foreground_color == background_color:
+        foreground_color = validate_color(input("Foreground color cannot be the same as background. Enter a different color: "))
+
+    resize(800, 800)
+    setOutline(background_color)
+    setFill(foreground_color)
+
+    drawing = input("Drawer, enter the name of the drawing: ")
+    coordinates = [(validate_coordinates(int(input("Enter the x-coordinate of the starting point: "))), validate_coordinates(int(input("Enter the y-coordinate of the starting point: "))))]
+
+    game_over = False
+    while not game_over:
+        guess = input("Guesser, enter your guess or 'next' for the next point: ")
+        if guess == 'next':
+            next_coordinate = (validate_coordinates(int(input("Drawer, enter the x-coordinate of the next point: "))), validate_coordinates(int(input("Drawer, enter the y-coordinate of the next point: "))))
+            if next_coordinate == coordinates[0]:
+                game_over = True
+                print("Game Over. The drawing was: ", drawing)
+            else:
+                coordinates.append(next_coordinate)
+                line(coordinates[-2][0], coordinates[-2][1], coordinates[-1][0], coordinates[-1][1])
+        elif guess == drawing:
+            game_over = True
+            print("Congratulations! You guessed correctly after seeing ", len(coordinates), " points.")
+        else:
+            print("Better luck next time!")
+
+if __name__ == "__main__":
+    main()
+# Compare this snippet from CPSC217W24A1-EthanStirling.py:

@@ -1,0 +1,30 @@
+# Ethan Stirling #30229189
+# Purpose: Define a function that can draw a square with user given length and character
+
+# Draws a square with given character and length
+def drawSquare(length, character):
+    space = " "
+    # Enter number of rows
+    for i in range(length):
+        # Enter number of columns
+        for j in range(length):
+            # Print character(s) at top/bottom row or at start/end middle rows
+            if i == 0 or i == length - 1 or j == 0 or j == length - 1:
+                print(character, end= space)
+            else:
+               print(space, end= space)
+        print(space)
+
+# Get user input
+while True:
+    length = int(input("Enter length: "))
+    # Reprompt if integer is a negative number or zero
+    if length <= 0:
+      print("Invalid length.")
+    # Character to draw the square with
+    else:
+      character = str(input("Enter character: "))
+      break
+
+# Draw the square
+drawSquare(length, character)
