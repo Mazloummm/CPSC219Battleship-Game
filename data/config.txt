@@ -1,0 +1,4 @@
+Submarine 2 2 H
+Battleship 3 3 H
+PatrolBoat 4 5 V
+Carrier 5 6 H
