@@ -41,7 +41,7 @@ public class Board {
         return false; // Ship cannot be placed
     }
 
-    private boolean isPlacementValid(int startX, int startY, int length, boolean horizontal) {
+    public boolean isPlacementValid(int startX, int startY, int length, boolean horizontal) {
         if (horizontal) {
             if (startX + length > size) return false; // Out of bounds horizontally
             for (int i = 0; i < length; i++) {

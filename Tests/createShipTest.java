@@ -1,5 +1,3 @@
-package Tests;
-
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 import ships.*;
@@ -27,7 +25,7 @@ public class createShipTest {
         Ship ship = ShipFactory.createShip("patrolboat", 2, 2, true);
         assertNotNull(ship);
         assertTrue(ship instanceof PatrolBoat);
-        assertEquals("PatrolBoat", ship.getName());
+        assertEquals("Patrol Boat", ship.getName());
     }
 
     @Test

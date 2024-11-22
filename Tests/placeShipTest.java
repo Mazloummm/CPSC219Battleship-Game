@@ -1,17 +1,6 @@
-package Tests;
-
-public class placeShipTest {
-
-}
-package Tests;
-
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
-import ships.Battleship;
-import ships.Carrier;
-import ships.Submarine;
-import ships.PatrolBoat;
-import Board;
+import ships.*;
 
 public class placeShipTest {
 
@@ -42,7 +31,7 @@ public class placeShipTest {
     public void testPlaceShipAtEdge() {
         Board board = new Board(10);
         Ship battleship = new Battleship(7, 0, true);
-        assertTrue(board.placeShip(battleship));
+        assertFalse(board.placeShip(battleship));
     }
 
     @Test

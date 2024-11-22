@@ -1,13 +1,9 @@
-package Tests;
-
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.BeforeEach;
 import static org.junit.jupiter.api.Assertions.*;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.util.Scanner;
-import HumanPlayer;
-import Board;
 
 public class HumanPlayerTest {
 
@@ -17,7 +13,7 @@ public class HumanPlayerTest {
     @BeforeEach
     public void setUp() {
         board = new Board(10); // Assuming a 10x10 board
-        humanPlayer = new HumanPlayer(board, new Scanner(System.in));
+        humanPlayer = new HumanPlayer("test", board);
     }
 
     @Test

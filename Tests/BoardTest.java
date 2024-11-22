@@ -1,12 +1,6 @@
-package Tests;
-
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
-import ships.Battleship;
-import ships.Carrier;
-import ships.Submarine;
-import ships.PatrolBoat;
-import Board;
+import ships.*;
 
 public class BoardTest {
 
@@ -38,17 +32,12 @@ public class BoardTest {
         Board board = new Board(10);
         Ship battleship = new Battleship(0, 0, true);
         board.placeShip(battleship);
-        assertTrue(board.isOccupied(0, 0));
-        assertFalse(board.isOccupied(1, 1));
+        assertFalse(board.isPlacementValid(0, 0, getSize(battleship), true));
+        assertFalse(board.isPlacementValid(0, 0, getSize(battleship), false));
     }
 
-    @Test
-    public void testIsOccupied() {
-        Board board = new Board(10);
-        Ship battleship = new Battleship(0, 0, true);
-        board.placeShip(battleship);
-        assertTrue(board.isOccupied(0, 0));
-        assertFalse(board.isOccupied(1, 1));
+    private int getSize(Ship ship) {
+        return ship.getSize();
     }
 
 }

@@ -69,17 +69,22 @@ public class HumanPlayer extends Player {
     }
 
     // Coordinate input validation
-    private int getCoordinate(String prompt) {
+    public int getCoordinate(String prompt) {
         int coordinate;
         while (true) {
             System.out.print(prompt);
             coordinate = scanner.nextInt();
             // Check if the coordinate is within the board size
-            if (coordinate >= 0 && coordinate < board.getSize()) {
-                return coordinate;
-            // If not, prompt the user to enter a valid coordinate
-            } else {
-                System.out.println("Invalid coordinate. Please enter a value between 0 and " + (board.getSize() - 1) + ".");
+            try { 
+                if (coordinate >= 0 && coordinate < board.getSize()) {
+                    return coordinate;
+                // If not, prompt the user to enter a valid coordinate
+                } else {
+                    System.out.println("Invalid coordinate. Please enter a value between 0 and " + (board.getSize() - 1) + ".");
+                }
+            } catch (Exception e) {
+                System.out.println("Invalid input. Please enter a valid integer.");
+                scanner.next();
             }
         }
     }
@@ -106,4 +111,8 @@ public class HumanPlayer extends Player {
         int guessY = getCoordinate("Enter y-coordinate for your guess (0 to " + (board.getSize() - 1) + "): ");
         return new int[]{guessX, guessY};
     }
+
+    public void setScanner(Scanner scanner) {
+        this.scanner = scanner;
+    }   
 }
