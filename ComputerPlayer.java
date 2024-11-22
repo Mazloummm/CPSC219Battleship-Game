@@ -1,11 +1,11 @@
 import java.util.Random;
+import ships.*;
 
-/**
- * Represents a computer player in the Battleship game.
- */
 public class ComputerPlayer extends Player {
+    // Instance variables
     private Random random; // Random number generator for making guesses
     private int ships; // Number of remaining ships
+    private char[][] trackingCBoard; // Board for tracking hits and misses
 
     /**
      * Constructs a new ComputerPlayer object with the given name and board.
@@ -16,7 +16,8 @@ public class ComputerPlayer extends Player {
     public ComputerPlayer(String name, Board board) {
         super(name, board);
         this.random = new Random();
-        this.ships = 5; // Initial number of ships (or set based on configuration)
+        this.trackingCBoard = new char[board.getSize()][board.getSize()]; // Initial number of ships (or set based on configuration)
+        initializeTrackingCBoard();
     }
 
     /**
@@ -24,8 +25,57 @@ public class ComputerPlayer extends Player {
      */
     @Override
     public void placeShips() {
-        // Implement logic to place ships randomly
-        // You can call the placeShip method from Board here
+        // Array of ships to place from configuration file
+        Ship[] shipsToPlace = ConfigFileReader.readConfigFile("config.txt");
+        Board compBoard = getBoard();
+        // Place each ship on the board
+        for (Ship ship : shipsToPlace) {
+            boolean placed = false;
+            while (!placed) {
+                // Check if ship can be placed
+                if (compBoard.placeShip(ship)) {
+                    placed = true;
+                } else { // Ship cannot be placed
+                    System.out.println("Check configuration file for valid ship placement.");
+                }
+            }
+        }
+            
+    }
+
+    // Display the tracking board for the computer
+    public void displayTrackingCBoard(char[][] trackingCBoard) {
+        for (int i = 0; i < trackingCBoard.length; i++) {
+            for (int j = 0; j < trackingCBoard[i].length; j++) {
+                // Display the tracking board
+                System.out.print("[" + trackingCBoard[i][j] + "]");
+            }
+            System.out.println();
+        }
+    }
+
+    // Get the tracking board for the computer
+    public char[][] getTrackingCBoard() {
+        return trackingCBoard;
+    }
+
+    // Initialize the tracking board with empty spaces
+    private void initializeTrackingCBoard() {
+        for (int i = 0; i < trackingCBoard.length; i++) {
+            for (int j = 0; j < trackingCBoard[i].length; j++) {
+                trackingCBoard[i][j] = ' '; // Initialize tracking board with empty spaces
+            } 
+        }
+    }
+
+    // Record a hit on the tracking board
+    public void recordHit(int x, int y) {
+        trackingCBoard[y][x] = 'X'; // Mark a hit
+    }
+
+    // Record a miss on the tracking board
+    public void recordMiss(int x, int y) {
+        trackingCBoard[y][x] = 'O'; // Mark a miss
     }
 
     /**
@@ -43,7 +93,7 @@ public class ComputerPlayer extends Player {
 
     /**
      * Returns the number of remaining ships.
-     *
+     * 
      * @return The count of remaining ships.
      */
     public int getRemainingShips() {

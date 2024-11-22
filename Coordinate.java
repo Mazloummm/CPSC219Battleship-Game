@@ -1,8 +1,5 @@
-/**
- * Represents a coordinate on a 2D grid.
- */
 public class Coordinate {
-
+    // Instance variables
     private int x; // x-coordinate
     private int y; // y-coordinate
 
@@ -25,13 +22,14 @@ public class Coordinate {
     // Override equals() method to compare two coordinates
     @Override
     public boolean equals(Object obj) {
+        // Check if the object is compared with itself
         if (this == obj) {
             return true;
-        }
-        if (obj == null || getClass() != obj.getClass()) {
+        } // Check if the object is null or of different class
+        else if (obj == null || getClass() != obj.getClass()) {
             return false;
         }
-        Coordinate that = (Coordinate) obj;
+        Coordinate that = (Coordinate) obj; // Cast the object to a Coordinate
         return x == that.x && y == that.y;
     }
 

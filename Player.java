@@ -1,26 +1,26 @@
 import java.util.List;
 
-import ships.Ship;
+import ships.*;
 
 public abstract class Player {
-    protected String name;
-    protected Board board;
-    protected List<Ship> ships;
+    protected String name; // Player's name
+    protected Board board; // Player's game board
+    protected List<Ship> ships; // List of ships
 
     public Player(String name, Board board) {
-        this.name = name;
-        this.board = board;
+        this.name = name; // Set player's name
+        this.board = board; // Set player's game board
     }
 
     public String getName() {
-        return name;
+        return name; // Return player's name
     }
 
     public Board getBoard() {
-        return board;
+        return board; // Return player's game board
     }
 
-    public abstract void placeShips();
+    public abstract void placeShips(); // Abstract method to place ships
 
-    public abstract int[] makeGuess();
+    public abstract int[] makeGuess(); // Abstract method to make a guess
 }

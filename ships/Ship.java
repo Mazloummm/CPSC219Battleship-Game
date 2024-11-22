@@ -1,5 +1,6 @@
 package ships;
 
+// Ship class that represents a ship in the game
 public abstract class Ship {
     protected int startX;
     protected int startY;
@@ -7,6 +8,7 @@ public abstract class Ship {
     protected int size;
     protected char identifier;
 
+    // Constructor
     public Ship(int startX, int startY, boolean horizontal, int size, char identifier) {
         this.startX = startX;
         this.startY = startY;
