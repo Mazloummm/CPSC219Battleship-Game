@@ -1,7 +1,7 @@
 package ships;
 
+// ShipFactory class that creates Ship objects
 public class ShipFactory {
-
     public static Ship createShip(String shipType, int startX, int startY, boolean horizontal) {
         switch (shipType.toLowerCase()) {
             case "battleship":

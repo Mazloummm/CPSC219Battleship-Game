@@ -1,9 +1,11 @@
-import ships.Ship;
+import ships.*;
 
 public class Board {
+    // Instance variables
     private char[][] grid;
     private final int size;
 
+    // Constructor to create a board of a given size
     public Board(int size) {
         this.size = size;
         grid = new char[size][size];
@@ -56,8 +58,8 @@ public class Board {
 
     public void displayBoard() {
         for (int i = 0; i < size; i++) {
-            System.out.print("[");
             for (int j = 0; j < size; j++) {
+                System.out.print("[");
                 // Display hit, miss, or empty cell
                 char cell = grid[i][j];
                 if (cell == 'X') {
@@ -85,20 +87,24 @@ public class Board {
         boolean hit = grid[y][x] != ' '; // Check if there is a ship here
         markHit(x, y);
         return hit; // Return true if it was a hit
-    }
+        }
 
-    public boolean allShipsSunk() {
-        for (int i = 0; i < size; i++) {
-            for (int j = 0; j < size; j++) {
-                if (grid[i][j] != ' ' && grid[i][j] != 'O') {
+        // Check if all ships are sunk
+        public boolean allShipsSunk() {
+        // Iterate through the grid
+            for (int i = 0; i < size; i++) {
+                for (int j = 0; j < size; j++) {
+                char cell = grid[i][j];
+                // If any ship parts are found, return false
+                if (cell == 'S' || cell == 'B' || cell == 'P' || cell == 'C') {
                     return false; // Found a part of a ship
                 }
+                }
             }
+            return true; // All ships are sunk
         }
-        return true; // All ships are sunk
-    }
 
-    public void displayInitialBoard() {
+        public void displayInitialBoard() {
         System.out.println("The game board is a " + size + "x" + size + " grid, each cell represented by square brackets []. The grid is used to place ships and make guesses. Each cell can either be empty, contain part of a ship, or be marked as a hit or miss.");
         System.out.println("This is what the empty game board looks like before ships have been placed:");
         displayBoard();
@@ -111,6 +117,7 @@ public class Board {
         System.out.println("• Patrol Boat (P)");
     }
     
+    // Display a sample board for the human player to see when placing ships
     public void displaySampleBoard() {
         // Example of a filled board for display
         char[][] sampleBoard = {

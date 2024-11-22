@@ -1,5 +1,6 @@
 package ships;
 
+// Enum for BattleshipType
 public enum BattleshipType {
     BATTLESHIP,
     SUBMARINE,
